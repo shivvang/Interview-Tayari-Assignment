@@ -1,3 +1,5 @@
+import User from "../models/user.model.js";
+
 export const registerUser = async (req, res) => {
     try {
         const { username, email, password, country } = req.body;
@@ -19,12 +21,12 @@ export const registerUser = async (req, res) => {
             });
         }
 
-        const newUser = await User.create({
-            username,
-            email,
-            password,
-            country
-        });
+       const newUser = await new User({
+        username,
+        email,
+        password,
+        country
+       }).save();
 
         return res.status(201).json({
             success: true,
@@ -63,7 +65,7 @@ export const loginUser = async (req, res) => {
         }
 
        
-        const isPasswordValid = await bcryptjs.compare(password);
+        const isPasswordValid = await existInUser.comparePassword(password);
 
         if (!isPasswordValid) {
             return res.status(401).json({

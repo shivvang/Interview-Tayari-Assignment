@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema({
     },
     email:{
         type:String,
-        unique:true,
         required:true,
     },
     password:{
@@ -23,23 +22,32 @@ const userSchema = new mongoose.Schema({
     }
 },{timestamps:true});
 
-userSchema.pre("save",async function(next){
-    if(!this.isModified("password"))next();
-    this.password = bcryptjs.hash(this.password,10);
-    next();
-})
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+        return next(); // Exit only if the password is not modified
+    }
+    try {
+        this.password = await bcryptjs.hash(this.password, 10); 
+        next(); 
+    } catch (error) {
+        next(error);
+    }
+});
 
-userSchema.methods.comparePassword = function(password){
-    return  bcryptjs.compare(this.password,password);
-}
+userSchema.methods.comparePassword = async function(password) {
+    return await bcryptjs.compare(password, this.password);
+};
 
-userSchema.methods.generateAccessToken = function(){
-    jwt.sign({
-        userId:this._id,
-        email:this.email,
-    },process.env.ACCESS_TOKEN_SECRET,
-    {expiresIn:`{process.env.ACCESS_TOKEN_EXPIRY}h`})
-}
+userSchema.methods.generateAccessToken = function() {
+    return jwt.sign(
+        {
+            userId: this._id,
+            email: this.email,
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: `${process.env.ACCESS_TOKEN_EXPIRY}h` } 
+    );
+};
 
 userSchema.index({email: 1 },{unique:true});
 

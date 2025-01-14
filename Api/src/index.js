@@ -17,7 +17,13 @@ const PORT  = process.env.PORT || 8000;
 
 //middlewares
 app.use(helmet());
-app.use(cors())
+app.use(
+    cors({
+      origin: [process.env.ORIGIN],
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      credentials: true,
+    })
+  );
 app.use(cookieparser());
 app.use(express.json());
 

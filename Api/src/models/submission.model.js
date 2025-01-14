@@ -20,6 +20,6 @@ questions:[
 
 
 
-const Submission  = mongoose.model(Submission,submissionSchema);
+const Submission  = mongoose.model("Submission",submissionSchema);
 
 export default Submission;
