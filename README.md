@@ -14,7 +14,7 @@ A **responsive web application** designed to help users share and view interview
 - **Create**: Submit interview experiences with details like company name, country, and key questions.
 - **Read**: View all shared submissions on a dashboard with **pagination** for better accessibility.
 - **Manage Your Submissions**: 
-  - Users can view, update, or delete their own submissions. 
+  - Users can view  their own submissions. 
   - Unauthorized attempts to access others’ submissions trigger an **unlock prompt/message**.
 
 ### 📱 **Responsive Design**
@@ -149,6 +149,18 @@ The application will now be accessible at [http://localhost:3000](http://localho
       ],
       "createdAt": "2025-01-14T16:54:50.422Z",
       "updatedAt": "2025-01-14T17:54:13.725Z"
+    },
+    {
+      "_id": "6786902bf20cbe153fb38d1b",
+      "name": "social pilot",
+      "user": "67860c561f3f05bffed82ada",
+      "questions": [
+        "What is a closure in JavaScript?",
+        "Explain the difference between var, let, and const.",
+        "How does the event loop work?"
+      ],
+      "createdAt": "2025-01-14T16:26:19.082Z",
+      "updatedAt": "2025-01-14T16:26:19.082Z",      
     }
   ]
 }
