@@ -50,6 +50,7 @@ export const createSubmission = async (req, res) => {
   };
 
   export const getAllSubmissions = async (req, res) => {
+   
     try {
       let { start } = req.query;
       start = parseInt(start, 10);
@@ -60,21 +61,26 @@ export const createSubmission = async (req, res) => {
           message: "Invalid 'start' parameter. It must be a positive integer." 
         });
       }
-  
+
+     
+
       const nextSet = (start - 1) * 10;
   
       
       const allSubmissions = await Submission.find({})
         .skip(nextSet)
-        .limit(10);
-  
+        .limit(9);
+        
       
-      if (!allSubmissions || allSubmissions.length === 0) {
-        return res.status(404).json({ 
-          success: false, 
-          message: "No submissions found for the given page." 
-        });
-      }
+        if (!allSubmissions || allSubmissions.length === 0) {
+          return res.status(404).json({
+            success: false,
+            message: "No submissions found for the given page.",
+            data: [],  
+          });
+        }
+
+     
   
       return res.status(200).json({
         success: true,
@@ -131,93 +137,93 @@ export const createSubmission = async (req, res) => {
   };
   
 
-  export const updateSubmission = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const { questions } = req.body;
+  // export const updateSubmission = async (req, res) => {
+  //   try {
+  //     const { id } = req.params;
+  //     const { questions } = req.body;
   
       
-      if (!id) {
-        return res.status(400).json({ 
-          success: false, 
-          message: "Submission ID is required." 
-        });
-      }
+  //     if (!id) {
+  //       return res.status(400).json({ 
+  //         success: false, 
+  //         message: "Submission ID is required." 
+  //       });
+  //     }
   
     
-      if (!Array.isArray(questions) || questions.length === 0) {
-        return res.status(400).json({ 
-          success: false, 
-          message: "'questions' must be a non-empty array." 
-        });
-      }
+  //     if (!Array.isArray(questions) || questions.length === 0) {
+  //       return res.status(400).json({ 
+  //         success: false, 
+  //         message: "'questions' must be a non-empty array." 
+  //       });
+  //     }
   
     
-      const updatedSubmission = await Submission.findByIdAndUpdate(
-        id, 
-        { questions },
-        { new: true } 
-      );
+  //     const updatedSubmission = await Submission.findByIdAndUpdate(
+  //       id, 
+  //       { questions },
+  //       { new: true } 
+  //     );
   
       
-      if (!updatedSubmission) {
-        return res.status(404).json({ 
-          success: false, 
-          message: "Submission not found." 
-        });
-      }
+  //     if (!updatedSubmission) {
+  //       return res.status(404).json({ 
+  //         success: false, 
+  //         message: "Submission not found." 
+  //       });
+  //     }
   
       
-      return res.status(200).json({
-        success: true,
-        message: "Submission updated successfully.",
-        data: updatedSubmission,
-      });
+  //     return res.status(200).json({
+  //       success: true,
+  //       message: "Submission updated successfully.",
+  //       data: updatedSubmission,
+  //     });
   
-    } catch (error) {
-      console.error(`Error while updating submission: ${error.message}`);
-      return res.status(500).json({ 
-        success: false, 
-        message: "Server error while updating submission." 
-      });
-    }
-  };
+  //   } catch (error) {
+  //     console.error(`Error while updating submission: ${error.message}`);
+  //     return res.status(500).json({ 
+  //       success: false, 
+  //       message: "Server error while updating submission." 
+  //     });
+  //   }
+  // };
   
-  export const deleteSubmission = async (req, res) => {
-    try {
-      const { id } = req.params;
+  // export const deleteSubmission = async (req, res) => {
+  //   try {
+  //     const { id } = req.params;
   
-      // Validate the ID
-      if (!id) {
-        return res.status(400).json({ 
-          success: false, 
-          message: "Submission ID is required." 
-        });
-      }
+  //     // Validate the ID
+  //     if (!id) {
+  //       return res.status(400).json({ 
+  //         success: false, 
+  //         message: "Submission ID is required." 
+  //       });
+  //     }
   
-      // Find and delete the submission
-      const deletedSubmission = await Submission.findByIdAndDelete(id);
+  //     // Find and delete the submission
+  //     const deletedSubmission = await Submission.findByIdAndDelete(id);
   
-      // Check if the submission exists
-      if (!deletedSubmission) {
-        return res.status(404).json({ 
-          success: false, 
-          message: "Submission not found." 
-        });
-      }
+  //     // Check if the submission exists
+  //     if (!deletedSubmission) {
+  //       return res.status(404).json({ 
+  //         success: false, 
+  //         message: "Submission not found." 
+  //       });
+  //     }
   
-      // Return success response
-      return res.status(200).json({
-        success: true,
-        message: "Submission deleted successfully.",
-      });
+  //     // Return success response
+  //     return res.status(200).json({
+  //       success: true,
+  //       message: "Submission deleted successfully.",
+  //     });
   
-    } catch (error) {
-      console.error(`Error while deleting submission: ${error.message}`);
-      return res.status(500).json({ 
-        success: false, 
-        message: "Server error while deleting submission." 
-      });
-    }
-  };
+  //   } catch (error) {
+  //     console.error(`Error while deleting submission: ${error.message}`);
+  //     return res.status(500).json({ 
+  //       success: false, 
+  //       message: "Server error while deleting submission." 
+  //     });
+  //   }
+  // };
   
